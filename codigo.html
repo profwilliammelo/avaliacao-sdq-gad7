@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Socioemocional & Ansiedade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .btn-primary { 
+            background: linear-gradient(135deg, #8d6e63 0%, #d81b60 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(141,110,99,0.4);
+        }
+        .progress-bar-container {
+            background: #f5f5f5;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 40px;
+            position: relative;
+            border: 2px solid #e0e0e0;
+        }
+        .progress-bar {
+            height: 100%;
+            transition: width 2.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            font-size: 14px;
+        }
+        .bar-green { background: linear-gradient(90deg, #8d6e63, #a1887f); }
+        .bar-yellow { background: linear-gradient(90deg, #d81b60, #f06292); }
+        .bar-red { background: linear-gradient(90deg, #424242, #616161); }
+        .animate-fill { animation: fillBar 2.5s ease-in-out; }
+        @keyframes fillBar {
+            from { width: 0%; }
+        }
+        .modal-overlay {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+        .question-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .question-card.answered {
+            border-color: #4caf50;
+            background: #f8fff8;
+        }
+        .tag-label {
+            font-size: 10px;
+            color: #666;
+            font-weight: 300;
+        }
+        .result-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .gradient-bg { background: white !important; }
+            .progress-bar { width: var(--final-width) !important; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Tela Inicial -->
+        <div id="home-screen" class="text-center">
+            <div class="bg-white rounded-2xl card-shadow p-8 mb-8 relative">
+                <button onclick="showInfo()" class="absolute top-4 right-4 bg-pink-100 hover:bg-pink-200 p-2 rounded-full no-print">
+                    <span class="text-pink-600 font-bold">ℹ️</span>
+                </button>
+                
+                <div class="flex items-center justify-center mb-6">
+                    <div class="bg-pink-100 p-4 rounded-full mr-4">
+                        <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-900">Avaliação Socioemocional & Ansiedade</h1>
+                </div>
+                
+                <div class="mb-8">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Respondo sobre:</label>
+                    <select id="global-respondent" class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                        <option value="self">Eu mesmo(a)</option>
+                        <option value="other">Outra pessoa</option>
+                    </select>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="startSDQ()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Fazer SDQ
+                    </button>
+                    <button onclick="startGAD7()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        Fazer GAD-7
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Informações -->
+        <div id="info-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4 no-print">
+            <div class="bg-white rounded-2xl p-6 max-w-2xl max-h-96 overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Como são calculadas as pontuações</h3>
+                    <button onclick="hideInfo()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="space-y-4 text-sm text-gray-700">
+                    <div>
+                        <h4 class="font-semibold">SDQ - 5 Subescalas:</h4>
+                        <ul class="list-disc list-inside space-y-1 mt-2">
+                            <li><strong>Sintomas emocionais:</strong> soma dos itens 3, 8, 13, 16, 24</li>
+                            <li><strong>Problemas de conduta:</strong> soma dos itens 5, 7*, 12, 18, 22</li>
+                            <li><strong>Hiperatividade/inatenção:</strong> soma dos itens 2, 10, 15, 21*, 25*</li>
+                            <li><strong>Problemas com colegas:</strong> soma dos itens 6, 11*, 14*, 19, 23</li>
+                            <li><strong>Habilidades pró-social:</strong> soma dos itens 1, 4, 9, 17, 20</li>
+                        </ul>
+                        <p class="mt-2 text-xs text-blue-600">* Itens com inversão: 0→2, 1→1, 2→0</p>
+                        <p class="mt-2"><strong>Total Difficulties:</strong> soma das 4 primeiras subescalas (máximo 40)</p>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Referências Bibliográficas:</h4>
+                        <div class="space-y-2 text-xs">
+                            <p>GOODMAN, R. <i>The strengths and difficulties questionnaire: a research note</i>. Journal of Child Psychology and Psychiatry, v. 38, n. 5, p. 581–586, 1997.</p>
+                            <p>SPITZER, R.L. et al. <i>A brief measure for assessing generalized anxiety disorder: the GAD-7</i>. Archives of Internal Medicine, v. 166, n. 10, p. 1092–1097, 2006.</p>
+                            <p>SDQ info. Disponível em: <a href="https://www.sdqinfo.org/" target="_blank" class="text-blue-600 hover:underline">https://www.sdqinfo.org/</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela SDQ -->
+        <div id="sdq-screen" class="hidden">
+            <div class="bg-white rounded-2xl card-shadow p-8">
+                <div class="flex items-center mb-6">
+                    <button onclick="goHome()" class="mr-4 p-2 text-gray-600 hover:text-gray-800 no-print">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </button>
+                    <h2 class="text-3xl font-bold text-gray-800">SDQ - Strengths and Difficulties Questionnaire</h2>
+                </div>
+
+                <div class="bg-pink-50 border-l-4 border-pink-400 p-6 mb-8 rounded-r-lg">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-pink-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-pink-800">Instruções importantes</h3>
+                            <div class="mt-2 text-sm text-pink-700">
+                                <p>Para cada afirmação, pense sobre como a pessoa tem se comportado <strong>nos últimos 6 meses</strong>. Marque a opção que melhor descreve o comportamento:</p>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li><strong>Falso:</strong> não é verdade</li>
+                                    <li><strong>Mais ou menos verdadeiro:</strong> às vezes é verdade</li>
+                                    <li><strong>Verdadeiro:</strong> definitivamente é verdade</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sdq-questions" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+                    <!-- Questions will be populated by JavaScript -->
+                </div>
+
+                <button id="sdq-calculate" onclick="calculateSDQ()" class="hidden btn-primary text-white px-8 py-3 rounded-lg font-semibold no-print">
+                    Ver Resultados Completos
+                </button>
+
+                <div id="sdq-results" class="hidden mt-8"></div>
+            </div>
+        </div>
+
+        <!-- Tela GAD-7 -->
+        <div id="gad7-screen" class="hidden">
+            <div class="bg-white rounded-2xl card-shadow p-8">
+                <div class="flex items-center mb-6">
+                    <button onclick="goHome()" class="mr-4 p-2 text-gray-600 hover:text-gray-800 no-print">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </button>
+                    <h2 class="text-3xl font-bold text-gray-800">GAD-7 - Generalized Anxiety Disorder</h2>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-6 mb-8 rounded-r-lg">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-amber-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-amber-800">Instruções importantes</h3>
+                            <div class="mt-2 text-sm text-amber-700">
+                                <p>Pense sobre <strong>as últimas 2 semanas</strong>. Com que frequência você (ou a pessoa) foi incomodado(a) pelos seguintes problemas:</p>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li><strong>Nunca:</strong> 0 dias</li>
+                                    <li><strong>Vários dias:</strong> 1-6 dias</li>
+                                    <li><strong>Mais da metade dos dias:</strong> 7-11 dias</li>
+                                    <li><strong>Quase todos os dias:</strong> 12-14 dias</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="gad7-questions" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+                    <!-- Questions will be populated by JavaScript -->
+                </div>
+
+                <button id="gad7-calculate" onclick="calculateGAD7()" class="hidden btn-primary text-white px-8 py-3 rounded-lg font-semibold no-print">
+                    Ver Resultados Completos
+                </button>
+
+                <div id="gad7-results" class="hidden mt-8"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="text-sm">
+                Prof° Dr° William Melo, 2025 — Todos os direitos reservados.<br>
+                Instagram: <a href="https://instagram.com/profwilliammelo" target="_blank" class="text-pink-400 hover:underline">@profwilliammelo</a>
+            </div>
+            <p class="text-sm mt-2 text-pink-300">#CienciaDoAfeto #EducacaoComEvidencias</p>
+        </div>
+    </footer>
+
+    <script>
+        // Complete SDQ Questions with official 25 items and variable tags
+        const sdqQuestions = [
+            { id: 1, text: "É atencioso(a) com os sentimentos dos outros", tag: "consid", inverted: false, subscale: "prosocial" },
+            { id: 2, text: "Fica agitado(a), não consegue ficar parado(a)", tag: "restles", inverted: false, subscale: "hyperactivity" },
+            { id: 3, text: "Tem dores de cabeça, dores de barriga ou náuseas", tag: "somatic", inverted: false, subscale: "emotional" },
+            { id: 4, text: "Compartilha prontamente com os outros", tag: "shares", inverted: false, subscale: "prosocial" },
+            { id: 5, text: "Tem explosões de temperamento", tag: "tantrum", inverted: false, subscale: "conduct" },
+            { id: 6, text: "Prefere brincar sozinho(a)", tag: "loner", inverted: false, subscale: "peer" },
+            { id: 7, text: "Obedece às regras", tag: "obeys", inverted: true, subscale: "conduct" },
+            { id: 8, text: "Fica preocupado(a) sem motivo", tag: "worries", inverted: false, subscale: "emotional" },
+            { id: 9, text: "Ajuda quem está machucado ou triste", tag: "caring", inverted: false, subscale: "prosocial" },
+            { id: 10, text: "Fica inquieto(a) ou se remexe bastante", tag: "fidgety", inverted: false, subscale: "hyperactivity" },
+            { id: 11, text: "Tem um bom amigo próximo", tag: "friend", inverted: true, subscale: "peer" },
+            { id: 12, text: "Briga ou intimida outros", tag: "fights", inverted: false, subscale: "conduct" },
+            { id: 13, text: "Fica triste ou para baixo", tag: "unhappy", inverted: false, subscale: "emotional" },
+            { id: 14, text: "Geralmente é bem visto(a) pelos outros", tag: "popular", inverted: true, subscale: "peer" },
+            { id: 15, text: "Se distrai facilmente", tag: "distrac", inverted: false, subscale: "hyperactivity" },
+            { id: 16, text: "Fica nervoso(a) em situações novas", tag: "clingy", inverted: false, subscale: "emotional" },
+            { id: 17, text: "É gentil com crianças mais novas", tag: "kind", inverted: false, subscale: "prosocial" },
+            { id: 18, text: "Mente ou trapaceia", tag: "lies", inverted: false, subscale: "conduct" },
+            { id: 19, text: "É provocado(a) ou intimidado(a)", tag: "bullied", inverted: false, subscale: "peer" },
+            { id: 20, text: "Voluntaria-se para ajudar", tag: "helpout", inverted: false, subscale: "prosocial" },
+            { id: 21, text: "Pensa antes de agir", tag: "reflect", inverted: true, subscale: "hyperactivity" },
+            { id: 22, text: "Rouba coisas que não são suas", tag: "steals", inverted: false, subscale: "conduct" },
+            { id: 23, text: "Se dá melhor com adultos do que com crianças", tag: "oldbest", inverted: false, subscale: "peer" },
+            { id: 24, text: "Tem muitos medos", tag: "afraid", inverted: false, subscale: "emotional" },
+            { id: 25, text: "Concentra-se com facilidade", tag: "attends", inverted: true, subscale: "hyperactivity" }
+        ];
+
+        // GAD-7 Questions
+        const gad7Questions = [
+            "Sentir-se nervoso(a), ansioso(a) ou aflito(a)",
+            "Não conseguir parar ou controlar o sentimento de preocupação",
+            "Preocupar-se demais com diferentes coisas",
+            "Ter dificuldade de relaxar",
+            "Estar tão inquieto(a) que é difícil ficar parado(a)",
+            "Tornar-se irritável",
+            "Ter medo de que algo horrível possa acontecer"
+        ];
+
+        let currentTest = '';
+        let sdqAnswers = {};
+        let gad7Answers = {};
+
+        function showInfo() {
+            document.getElementById('info-modal').classList.remove('hidden');
+        }
+
+        function hideInfo() {
+            document.getElementById('info-modal').classList.add('hidden');
+        }
+
+        function startSDQ() {
+            currentTest = 'sdq';
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('sdq-screen').classList.remove('hidden');
+            renderSDQQuestions();
+        }
+
+        function startGAD7() {
+            currentTest = 'gad7';
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('gad7-screen').classList.remove('hidden');
+            renderGAD7Questions();
+        }
+
+        function goHome() {
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('sdq-screen').classList.add('hidden');
+            document.getElementById('gad7-screen').classList.add('hidden');
+            sdqAnswers = {};
+            gad7Answers = {};
+        }
+
+        function renderSDQQuestions() {
+            const container = document.getElementById('sdq-questions');
+            container.innerHTML = '';
+
+            sdqQuestions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-card p-4 border border-gray-200 rounded-lg';
+                questionDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h4 class="font-medium text-gray-800 mb-3 text-sm">
+                            ${index + 1}. ${question.text} 
+                            <span class="tag-label">(${question.tag})</span>
+                        </h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="sdq-${question.id}" value="0" onchange="updateSDQAnswer(${question.id}, 0, this)" class="mr-2">
+                                <span>Falso</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="sdq-${question.id}" value="1" onchange="updateSDQAnswer(${question.id}, 1, this)" class="mr-2">
+                                <span>Mais ou menos verdadeiro</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="sdq-${question.id}" value="2" onchange="updateSDQAnswer(${question.id}, 2, this)" class="mr-2">
+                                <span>Verdadeiro</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function renderGAD7Questions() {
+            const container = document.getElementById('gad7-questions');
+            container.innerHTML = '';
+
+            gad7Questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-card p-4 border border-gray-200 rounded-lg';
+                questionDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h4 class="font-medium text-gray-800 mb-3 text-sm">${index + 1}. ${question}</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="gad7-${index + 1}" value="0" onchange="updateGAD7Answer(${index + 1}, 0, this)" class="mr-2">
+                                <span>Nunca</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="gad7-${index + 1}" value="1" onchange="updateGAD7Answer(${index + 1}, 1, this)" class="mr-2">
+                                <span>Vários dias</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="gad7-${index + 1}" value="2" onchange="updateGAD7Answer(${index + 1}, 2, this)" class="mr-2">
+                                <span>Mais da metade dos dias</span>
+                            </label>
+                            <label class="flex items-center text-sm">
+                                <input type="radio" name="gad7-${index + 1}" value="3" onchange="updateGAD7Answer(${index + 1}, 3, this)" class="mr-2">
+                                <span>Quase todos os dias</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function updateSDQAnswer(questionId, value, element) {
+            sdqAnswers[questionId] = parseInt(value);
+            element.closest('.question-card').classList.add('answered');
+            checkSDQCompletion();
+        }
+
+        function updateGAD7Answer(questionId, value, element) {
+            gad7Answers[questionId] = parseInt(value);
+            element.closest('.question-card').classList.add('answered');
+            checkGAD7Completion();
+        }
+
+        function checkSDQCompletion() {
+            if (Object.keys(sdqAnswers).length === sdqQuestions.length) {
+                document.getElementById('sdq-calculate').classList.remove('hidden');
+            }
+        }
+
+        function checkGAD7Completion() {
+            if (Object.keys(gad7Answers).length === gad7Questions.length) {
+                document.getElementById('gad7-calculate').classList.remove('hidden');
+            }
+        }
+
+        function getBarColor(percentage) {
+            if (percentage <= 33) return 'bar-green';
+            if (percentage <= 66) return 'bar-yellow';
+            return 'bar-red';
+        }
+
+        function calculateSDQ() {
+            // Apply inversions for specific items
+            const invertedItems = [7, 11, 14, 21, 25];
+            const processedAnswers = {};
+            
+            Object.keys(sdqAnswers).forEach(key => {
+                const questionId = parseInt(key);
+                let value = sdqAnswers[key];
+                
+                if (invertedItems.includes(questionId)) {
+                    value = 2 - value; // 0→2, 1→1, 2→0
+                }
+                processedAnswers[questionId] = value;
+            });
+
+            // Calculate subscales
+            const subscales = {
+                emotional: { score: 0, items: [] },
+                conduct: { score: 0, items: [] },
+                hyperactivity: { score: 0, items: [] },
+                peer: { score: 0, items: [] },
+                prosocial: { score: 0, items: [] }
+            };
+
+            sdqQuestions.forEach(question => {
+                const score = processedAnswers[question.id] || 0;
+                subscales[question.subscale].score += score;
+                subscales[question.subscale].items.push({
+                    id: question.id,
+                    text: question.text,
+                    tag: question.tag,
+                    originalValue: sdqAnswers[question.id],
+                    finalValue: score,
+                    inverted: question.inverted
+                });
+            });
+
+            const totalDifficulties = subscales.emotional.score + subscales.conduct.score + 
+                                   subscales.hyperactivity.score + subscales.peer.score;
+
+            displaySDQResults(subscales, totalDifficulties, processedAnswers);
+        }
+
+        function getSDQRecommendations(subscales, totalDifficulties) {
+            const recommendations = [];
+            const totalPercentage = (totalDifficulties / 40) * 100;
+            
+            // General recommendations based on total difficulties
+            if (totalPercentage <= 33) {
+                recommendations.push("🌟 <strong>Parabéns!</strong> Os resultados indicam um desenvolvimento socioemocional saudável. Continue cultivando um ambiente afetuoso e de apoio.");
+                recommendations.push("💚 <strong>Mantenha as práticas positivas:</strong> diálogo aberto, rotinas afetuosas e momentos de qualidade juntos.");
+            } else if (totalPercentage <= 66) {
+                recommendations.push("🤗 <strong>Atenção carinhosa:</strong> Alguns aspectos merecem cuidado especial. Isso é normal e pode ser trabalhado com amor e paciência.");
+                recommendations.push("💛 <strong>Estratégias afetivas:</strong> Aumente momentos de conexão, pratique escuta ativa e celebre pequenas conquistas diárias.");
+            } else {
+                recommendations.push("🫂 <strong>Apoio especializado:</strong> Os resultados sugerem que seria benéfico buscar orientação de um profissional de saúde mental.");
+                recommendations.push("❤️ <strong>Amor incondicional:</strong> Lembre-se: você não está sozinho(a). Buscar ajuda é um ato de amor e coragem.");
+            }
+
+            // Specific recommendations by subscale
+            const emotionalPercentage = (subscales.emotional.score / 10) * 100;
+            if (emotionalPercentage > 50) {
+                recommendations.push("🌈 <strong>Cuidado emocional:</strong> Pratique técnicas de regulação emocional: respiração profunda, mindfulness e expressão criativa.");
+            }
+
+            const conductPercentage = (subscales.conduct.score / 10) * 100;
+            if (conductPercentage > 50) {
+                recommendations.push("🎯 <strong>Limites com afeto:</strong> Estabeleça regras claras com explicações amorosas. Consistência + carinho = crescimento saudável.");
+            }
+
+            const hyperactivityPercentage = (subscales.hyperactivity.score / 10) * 100;
+            if (hyperactivityPercentage > 50) {
+                recommendations.push("⚡ <strong>Energia canalizada:</strong> Atividades físicas regulares, pausas frequentes e ambientes organizados ajudam muito.");
+            }
+
+            const peerPercentage = (subscales.peer.score / 10) * 100;
+            if (peerPercentage > 50) {
+                recommendations.push("👥 <strong>Conexões sociais:</strong> Facilite encontros com amigos, ensine habilidades sociais através de brincadeiras e seja um modelo de relacionamento saudável.");
+            }
+
+            const prosocialPercentage = (subscales.prosocial.score / 10) * 100;
+            if (prosocialPercentage >= 70) {
+                recommendations.push("🌟 <strong>Competência social excelente!</strong> Continue incentivando atos de gentileza e empatia. Você está no caminho certo!");
+            }
+
+            return recommendations;
+        }
+
+        function getGAD7Recommendations(totalScore, classification) {
+            const recommendations = [];
+            
+            switch(classification) {
+                case 'Mínima':
+                    recommendations.push("🌟 <strong>Excelente!</strong> Seus níveis de ansiedade estão dentro do esperado. Continue cuidando do seu bem-estar emocional.");
+                    recommendations.push("💚 <strong>Mantenha hábitos saudáveis:</strong> exercícios regulares, sono adequado e momentos de relaxamento.");
+                    recommendations.push("🧘 <strong>Prevenção:</strong> Pratique técnicas de mindfulness e mantenha conexões sociais positivas.");
+                    break;
+                    
+                case 'Leve':
+                    recommendations.push("🤗 <strong>Atenção gentil:</strong> Você pode estar passando por um período de maior preocupação. Isso é normal e pode ser gerenciado.");
+                    recommendations.push("💛 <strong>Autocuidado:</strong> Dedique tempo para atividades prazerosas, respire fundo e pratique autocompaixão.");
+                    recommendations.push("🌱 <strong>Crescimento:</strong> Considere técnicas de relaxamento, journaling ou conversas com pessoas de confiança.");
+                    break;
+                    
+                case 'Moderada':
+                    recommendations.push("🫂 <strong>Cuidado especial:</strong> Sua ansiedade está em um nível que merece atenção. Você merece se sentir melhor.");
+                    recommendations.push("💜 <strong>Apoio profissional:</strong> Considere conversar com um psicólogo. Terapia é um investimento no seu bem-estar.");
+                    recommendations.push("🌸 <strong>Estratégias diárias:</strong> Técnicas de respiração, exercícios leves e rotinas estruturadas podem ajudar muito.");
+                    break;
+                    
+                case 'Grave':
+                    recommendations.push("❤️ <strong>Você não está sozinho(a):</strong> Busque ajuda profissional o quanto antes. Sua saúde mental é prioridade.");
+                    recommendations.push("🆘 <strong>Apoio imediato:</strong> Converse com um psiquiatra ou psicólogo. Medicação e terapia podem trazer alívio significativo.");
+                    recommendations.push("🤝 <strong>Rede de apoio:</strong> Compartilhe seus sentimentos com pessoas de confiança. Pedir ajuda é sinal de força, não fraqueza.");
+                    break;
+            }
+            
+            // General recommendations for all levels
+            recommendations.push("📞 <strong>Recursos de apoio:</strong> CVV 188 (24h), CAPS de sua cidade, ou profissionais de saúde mental da sua região.");
+            
+            return recommendations;
+        }
+
+        function calculateGAD7() {
+            const totalScore = Object.values(gad7Answers).reduce((sum, score) => sum + score, 0);
+            
+            let classification = '';
+            if (totalScore <= 4) classification = 'Mínima';
+            else if (totalScore <= 9) classification = 'Leve';
+            else if (totalScore <= 14) classification = 'Moderada';
+            else classification = 'Grave';
+
+            displayGAD7Results(totalScore, classification);
+        }
+
+        function displaySDQResults(subscales, totalDifficulties, processedAnswers) {
+            const resultsDiv = document.getElementById('sdq-results');
+            
+            const html = `
+                <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                        📊 Resultados SDQ Completos
+                    </h3>
+                    
+                    <div class="space-y-6 mb-8">
+                        ${createProgressBar('Sintomas emocionais', subscales.emotional.score, 10, false)}
+                        ${createProgressBar('Problemas de conduta', subscales.conduct.score, 10, false)}
+                        ${createProgressBar('Hiperatividade/inatenção', subscales.hyperactivity.score, 10, false)}
+                        ${createProgressBar('Problemas com colegas', subscales.peer.score, 10, false)}
+                        ${createProgressBar('Total Difficulties', totalDifficulties, 40, false)}
+                        ${createProgressBar('Habilidades pró-social', subscales.prosocial.score, 10, true)}
+                    </div>
+
+                    <div class="mb-8 p-4 bg-white rounded-lg border">
+                        <h4 class="font-bold text-gray-800 mb-3">Legenda das Cores:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bar-green rounded mr-2"></div>
+                                <span class="text-sm">Verde: ≤33% (baixo)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bar-yellow rounded mr-2"></div>
+                                <span class="text-sm">Amarelo: 34-66% (moderado)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bar-red rounded mr-2"></div>
+                                <span class="text-sm">Vermelho: >66% (alto)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-bold text-gray-800 mb-4">Recapitulação Detalhada:</h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            ${createSubscaleCard('Sintomas emocionais', subscales.emotional)}
+                            ${createSubscaleCard('Problemas de conduta', subscales.conduct)}
+                            ${createSubscaleCard('Hiperatividade/inatenção', subscales.hyperactivity)}
+                            ${createSubscaleCard('Problemas com colegas', subscales.peer)}
+                            ${createSubscaleCard('Habilidades pró-social (competência social)', subscales.prosocial)}
+                        </div>
+
+                        <div class="result-card bg-yellow-100 border-yellow-300">
+                            <h5 class="font-bold text-lg text-gray-800 mb-2">Total Difficulties: ${totalDifficulties}/40 (${((totalDifficulties/40)*100).toFixed(1)}%)</h5>
+                            <p class="text-sm text-gray-600">Soma das 4 primeiras subescalas</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 p-6 bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 rounded-lg">
+                        <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                            💝 Recomendações Afetivas
+                        </h4>
+                        <div id="sdq-recommendations" class="text-sm text-gray-700 space-y-2">
+                            <!-- Recommendations will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-pink-50 border-l-4 border-pink-400 rounded text-center">
+                        <p class="text-sm text-gray-700 font-medium">
+                            🖨️ Para salvar seu relatório colorido, basta printar a tela.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+            
+            // Add recommendations
+            const recommendations = getSDQRecommendations(subscales, totalDifficulties);
+            const recommendationsDiv = document.getElementById('sdq-recommendations');
+            recommendationsDiv.innerHTML = recommendations.map(rec => `<p>${rec}</p>`).join('');
+            
+            // Animate bars after a short delay
+            setTimeout(() => {
+                document.querySelectorAll('.progress-bar').forEach(bar => {
+                    bar.classList.add('animate-fill');
+                });
+            }, 500);
+        }
+
+        function displayGAD7Results(totalScore, classification) {
+            const resultsDiv = document.getElementById('gad7-results');
+            
+            const html = `
+                <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                        📊 Resultados GAD-7 Completos
+                    </h3>
+                    
+                    <div class="space-y-6 mb-8">
+                        ${createProgressBar('GAD-7 Total', totalScore, 21, false)}
+                    </div>
+
+                    <div class="mb-6 p-4 bg-white rounded-lg border">
+                        <h4 class="font-bold text-gray-800 mb-3">Classificação: 
+                            <span class="text-lg ${classification === 'Grave' ? 'text-red-600' : classification === 'Moderada' ? 'text-orange-600' : classification === 'Leve' ? 'text-yellow-600' : 'text-green-600'}">${classification}</span>
+                        </h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <div class="p-2 bg-green-100 rounded text-center">
+                                <div class="font-bold text-green-800">Mínima</div>
+                                <div class="text-green-700">0–4 pontos</div>
+                            </div>
+                            <div class="p-2 bg-yellow-100 rounded text-center">
+                                <div class="font-bold text-yellow-800">Leve</div>
+                                <div class="text-yellow-700">5–9 pontos</div>
+                            </div>
+                            <div class="p-2 bg-orange-100 rounded text-center">
+                                <div class="font-bold text-orange-800">Moderada</div>
+                                <div class="text-orange-700">10–14 pontos</div>
+                            </div>
+                            <div class="p-2 bg-red-100 rounded text-center">
+                                <div class="font-bold text-red-800">Grave</div>
+                                <div class="text-red-700">15–21 pontos</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-bold text-gray-800 mb-4">Recapitulação Detalhada:</h4>
+                        <div class="result-card">
+                            <h5 class="font-bold text-lg text-gray-800 mb-2">Respostas GAD-7:</h5>
+                            ${gad7Questions.map((question, index) => 
+                                `<div class="flex justify-between items-center py-1 border-b border-gray-100 last:border-b-0">
+                                    <span class="text-sm">${index + 1}. ${question}</span>
+                                    <span class="font-bold text-blue-600">${gad7Answers[index + 1]}</span>
+                                </div>`
+                            ).join('')}
+                            <div class="mt-3 pt-3 border-t border-gray-200">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold">Total:</span>
+                                    <span class="font-bold text-lg text-blue-600">${totalScore}/21</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8 p-4 bg-white rounded-lg border">
+                        <h4 class="font-bold text-gray-800 mb-3">Legenda das Cores:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bar-green rounded mr-2"></div>
+                                <span class="text-sm">Verde: ≤33% (baixo)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bar-yellow rounded mr-2"></div>
+                                <span class="text-sm">Amarelo: 34-66% (moderado)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bar-red rounded mr-2"></div>
+                                <span class="text-sm">Vermelho: >66% (alto)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 p-6 bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 rounded-lg">
+                        <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                            💝 Recomendações Afetivas
+                        </h4>
+                        <div id="gad7-recommendations" class="text-sm text-gray-700 space-y-2">
+                            <!-- Recommendations will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-pink-50 border-l-4 border-pink-400 rounded text-center">
+                        <p class="text-sm text-gray-700 font-medium">
+                            🖨️ Para salvar seu relatório colorido, basta printar a tela.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+            
+            // Add recommendations
+            const recommendations = getGAD7Recommendations(totalScore, classification);
+            const recommendationsDiv = document.getElementById('gad7-recommendations');
+            recommendationsDiv.innerHTML = recommendations.map(rec => `<p>${rec}</p>`).join('');
+            
+            // Animate bar after a short delay
+            setTimeout(() => {
+                document.querySelectorAll('.progress-bar').forEach(bar => {
+                    bar.classList.add('animate-fill');
+                });
+            }, 500);
+        }
+
+        function createProgressBar(label, score, maxScore, isProsocial) {
+            const percentage = (score / maxScore) * 100;
+            const colorClass = getBarColor(percentage);
+            const prosocialNote = isProsocial ? ' (competência social)' : '';
+            
+            return `
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-gray-800">${label}${prosocialNote}</h4>
+                        <span class="text-sm text-gray-600">${score}/${maxScore} (${percentage.toFixed(1)}%)</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar ${colorClass}" style="width: ${percentage}%; --final-width: ${percentage}%">
+                            ${score}/${maxScore} (${percentage.toFixed(1)}%)
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createSubscaleCard(title, subscale) {
+            return `
+                <div class="result-card">
+                    <h5 class="font-bold text-gray-800 mb-2">${title}: ${subscale.score}/10</h5>
+                    <div class="space-y-1">
+                        ${subscale.items.map(item => 
+                            `<div class="flex justify-between items-center text-xs">
+                                <span>${item.id}. ${item.text} (${item.tag})</span>
+                                <span class="font-bold ${item.inverted ? 'text-blue-600' : 'text-gray-600'}">
+                                    ${item.inverted ? `${item.originalValue}→${item.finalValue}` : item.finalValue}
+                                </span>
+                            </div>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995ccafa96dbe2d3',t:'MTc2MTY3OTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

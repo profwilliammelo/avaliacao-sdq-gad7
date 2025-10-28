@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação Socioemocional & Ansiedade</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação Socioemocional &amp; Ansiedade</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .gradient-bg { background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%); }
@@ -37,9 +37,9 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
             font-size: 14px;
         }
-        .bar-green { background: linear-gradient(90deg, #8d6e63, #a1887f); }
-        .bar-yellow { background: linear-gradient(90deg, #d81b60, #f06292); }
-        .bar-red { background: linear-gradient(90deg, #424242, #616161); }
+        .bar-green { background: linear-gradient(90deg, #22C55E, #16A34A); border: 1px solid rgba(255,255,255,0.2); }
+        .bar-yellow { background: linear-gradient(90deg, #FACC15, #EAB308); border: 1px solid rgba(255,255,255,0.2); }
+        .bar-red { background: linear-gradient(90deg, #EF4444, #DC2626); border: 1px solid rgba(255,255,255,0.2); }
         .animate-fill { animation: fillBar 2.5s ease-in-out; }
         @keyframes fillBar {
             from { width: 0%; }
@@ -76,218 +76,171 @@
             .progress-bar { width: var(--final-width) !important; }
         }
     </style>
-</head>
-<body class="gradient-bg min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <!-- Tela Inicial -->
-        <div id="home-screen" class="text-center">
-            <div class="bg-white rounded-2xl card-shadow p-8 mb-8 relative">
-                <button onclick="showInfo()" class="absolute top-4 right-4 bg-pink-100 hover:bg-pink-200 p-2 rounded-full no-print">
-                    <span class="text-pink-600 font-bold">ℹ️</span>
-                </button>
-                
-                <div class="flex items-center justify-center mb-6">
-                    <div class="bg-pink-100 p-4 rounded-full mr-4">
-                        <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                    </div>
-                    <h1 class="text-4xl font-bold text-gray-900">Avaliação Socioemocional & Ansiedade</h1>
-                </div>
-                
-                <div class="mb-8">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Respondo sobre:</label>
-                    <select id="global-respondent" class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                        <option value="self">Eu mesmo(a)</option>
-                        <option value="other">Outra pessoa</option>
-                    </select>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button onclick="startSDQ()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                        </svg>
-                        Fazer SDQ
-                    </button>
-                    <button onclick="startGAD7()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        Fazer GAD-7
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal de Informações -->
-        <div id="info-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4 no-print">
-            <div class="bg-white rounded-2xl p-6 max-w-2xl max-h-96 overflow-y-auto">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-800">Como são calculadas as pontuações</h3>
-                    <button onclick="hideInfo()" class="text-gray-500 hover:text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="space-y-4 text-sm text-gray-700">
-                    <div>
-                        <h4 class="font-semibold">SDQ - 5 Subescalas:</h4>
-                        <ul class="list-disc list-inside space-y-1 mt-2">
-                            <li><strong>Sintomas emocionais:</strong> soma dos itens 3, 8, 13, 16, 24</li>
-                            <li><strong>Problemas de conduta:</strong> soma dos itens 5, 7*, 12, 18, 22</li>
-                            <li><strong>Hiperatividade/inatenção:</strong> soma dos itens 2, 10, 15, 21*, 25*</li>
-                            <li><strong>Problemas com colegas:</strong> soma dos itens 6, 11*, 14*, 19, 23</li>
-                            <li><strong>Habilidades pró-social:</strong> soma dos itens 1, 4, 9, 17, 20</li>
-                        </ul>
-                        <p class="mt-2 text-xs text-blue-600">* Itens com inversão: 0→2, 1→1, 2→0</p>
-                        <p class="mt-2"><strong>Total Difficulties:</strong> soma das 4 primeiras subescalas (máximo 40)</p>
-                    </div>
-                    
-                    <div class="border-t pt-4">
-                        <h4 class="font-semibold mb-2">Referências Bibliográficas:</h4>
-                        <div class="space-y-2 text-xs">
-                            <p>GOODMAN, R. <i>The strengths and difficulties questionnaire: a research note</i>. Journal of Child Psychology and Psychiatry, v. 38, n. 5, p. 581–586, 1997.</p>
-                            <p>SPITZER, R.L. et al. <i>A brief measure for assessing generalized anxiety disorder: the GAD-7</i>. Archives of Internal Medicine, v. 166, n. 10, p. 1092–1097, 2006.</p>
-                            <p>SDQ info. Disponível em: <a href="https://www.sdqinfo.org/" target="_blank" class="text-blue-600 hover:underline">https://www.sdqinfo.org/</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tela SDQ -->
-        <div id="sdq-screen" class="hidden">
-            <div class="bg-white rounded-2xl card-shadow p-8">
-                <div class="flex items-center mb-6">
-                    <button onclick="goHome()" class="mr-4 p-2 text-gray-600 hover:text-gray-800 no-print">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                    </button>
-                    <h2 class="text-3xl font-bold text-gray-800">SDQ - Strengths and Difficulties Questionnaire</h2>
-                </div>
-
-                <div class="bg-pink-50 border-l-4 border-pink-400 p-6 mb-8 rounded-r-lg">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <svg class="w-5 h-5 text-pink-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <h3 class="text-sm font-medium text-pink-800">Instruções importantes</h3>
-                            <div class="mt-2 text-sm text-pink-700">
-                                <p>Para cada afirmação, pense sobre como a pessoa tem se comportado <strong>nos últimos 6 meses</strong>. Marque a opção que melhor descreve o comportamento:</p>
-                                <ul class="list-disc list-inside mt-2 space-y-1">
-                                    <li><strong>Falso:</strong> não é verdade</li>
-                                    <li><strong>Mais ou menos verdadeiro:</strong> às vezes é verdade</li>
-                                    <li><strong>Verdadeiro:</strong> definitivamente é verdade</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sdq-questions" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-                    <!-- Questions will be populated by JavaScript -->
-                </div>
-
-                <button id="sdq-calculate" onclick="calculateSDQ()" class="hidden btn-primary text-white px-8 py-3 rounded-lg font-semibold no-print">
-                    Ver Resultados Completos
-                </button>
-
-                <div id="sdq-results" class="hidden mt-8"></div>
-            </div>
-        </div>
-
-        <!-- Tela GAD-7 -->
-        <div id="gad7-screen" class="hidden">
-            <div class="bg-white rounded-2xl card-shadow p-8">
-                <div class="flex items-center mb-6">
-                    <button onclick="goHome()" class="mr-4 p-2 text-gray-600 hover:text-gray-800 no-print">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                    </button>
-                    <h2 class="text-3xl font-bold text-gray-800">GAD-7 - Generalized Anxiety Disorder</h2>
-                </div>
-
-                <div class="bg-amber-50 border-l-4 border-amber-400 p-6 mb-8 rounded-r-lg">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <svg class="w-5 h-5 text-amber-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <h3 class="text-sm font-medium text-amber-800">Instruções importantes</h3>
-                            <div class="mt-2 text-sm text-amber-700">
-                                <p>Pense sobre <strong>as últimas 2 semanas</strong>. Com que frequência você (ou a pessoa) foi incomodado(a) pelos seguintes problemas:</p>
-                                <ul class="list-disc list-inside mt-2 space-y-1">
-                                    <li><strong>Nunca:</strong> 0 dias</li>
-                                    <li><strong>Vários dias:</strong> 1-6 dias</li>
-                                    <li><strong>Mais da metade dos dias:</strong> 7-11 dias</li>
-                                    <li><strong>Quase todos os dias:</strong> 12-14 dias</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="gad7-questions" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-                    <!-- Questions will be populated by JavaScript -->
-                </div>
-
-                <button id="gad7-calculate" onclick="calculateGAD7()" class="hidden btn-primary text-white px-8 py-3 rounded-lg font-semibold no-print">
-                    Ver Resultados Completos
-                </button>
-
-                <div id="gad7-results" class="hidden mt-8"></div>
-            </div>
-        </div>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="gradient-bg min-h-screen">
+  <div class="container mx-auto px-4 py-8 max-w-6xl"><!-- Tela Inicial -->
+   <div id="home-screen" class="text-center">
+    <div class="bg-white rounded-2xl card-shadow p-8 mb-8 relative"><button onclick="showInfo()" class="absolute top-4 right-4 bg-pink-100 hover:bg-pink-200 p-2 rounded-full no-print"> <span class="text-pink-600 font-bold">ℹ️</span> </button>
+     <div class="flex items-center justify-center mb-6">
+      <div class="bg-pink-100 p-4 rounded-full mr-4">
+       <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+       </svg>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900">Avaliação Socioemocional &amp; Ansiedade</h1>
+     </div>
+     <div class="mb-8"><label class="block text-sm font-medium text-gray-700 mb-2">Respondo sobre:</label> <select id="global-respondent" class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"> <option value="self">Eu mesmo(a)</option> <option value="other">Outra pessoa</option> </select>
+     </div>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center"><button onclick="startSDQ()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center">
+       <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+       </svg> Fazer SDQ </button> <button onclick="startGAD7()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center">
+       <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+       </svg> Fazer GAD-7 </button>
+     </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-6 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="text-sm">
-                Prof° Dr° William Melo, 2025 — Todos os direitos reservados.<br>
-                Instagram: <a href="https://instagram.com/profwilliammelo" target="_blank" class="text-pink-400 hover:underline">@profwilliammelo</a>
-            </div>
-            <p class="text-sm mt-2 text-pink-300">#CienciaDoAfeto #EducacaoComEvidencias</p>
+   </div><!-- Modal de Informações -->
+   <div id="info-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl p-6 max-w-2xl max-h-96 overflow-y-auto">
+     <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Como são calculadas as pontuações</h3><button onclick="hideInfo()" class="text-gray-500 hover:text-gray-700">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+       </svg></button>
+     </div>
+     <div class="space-y-4 text-sm text-gray-700">
+      <div>
+       <h4 class="font-semibold">SDQ - 5 Subescalas:</h4>
+       <ul class="list-disc list-inside space-y-1 mt-2">
+        <li><strong>Sintomas emocionais:</strong> soma dos itens 3, 8, 13, 16, 24</li>
+        <li><strong>Problemas de conduta:</strong> soma dos itens 5, 7*, 12, 18, 22</li>
+        <li><strong>Hiperatividade/inatenção:</strong> soma dos itens 2, 10, 15, 21*, 25*</li>
+        <li><strong>Problemas com colegas:</strong> soma dos itens 6, 11*, 14*, 19, 23</li>
+        <li><strong>Habilidades pró-social:</strong> soma dos itens 1, 4, 9, 17, 20 (não entra no Total de Dificuldades)</li>
+       </ul>
+       <p class="mt-2 text-xs text-blue-600">* Itens com inversão: 0→2, 1→1, 2→0</p>
+       <p class="mt-2"><strong>Total Difficulties:</strong> soma das 4 primeiras subescalas (máximo 40)</p>
+      </div>
+      <div class="border-t pt-4">
+       <h4 class="font-semibold mb-2">Versões SDQ:</h4>
+       <p class="text-xs text-gray-600">O SDQ possui versões para <strong>pais/responsáveis (p)</strong>, <strong>auto-relato (s)</strong> e <strong>professores (t)</strong>. Aqui usamos a estrutura do <strong>auto-relato (s)</strong>, <strong>adaptada</strong> para que <strong>terceiros</strong> também respondam <strong>sobre outra pessoa</strong> (não limitado a pais/professores). Tags de item seguem SDQinfo: p&lt;tag&gt;, s&lt;tag&gt;, t&lt;tag&gt;.</p>
+      </div>
+      <div class="border-t pt-4">
+       <h4 class="font-semibold mb-2">Referências Bibliográficas:</h4>
+       <div class="space-y-2 text-xs">
+        <p>GOODMAN, R. <i>The strengths and difficulties questionnaire: a research note</i>. Journal of Child Psychology and Psychiatry, v. 38, n. 5, p. 581–586, 1997.</p>
+        <p>SPITZER, R.L. et al. <i>A brief measure for assessing generalized anxiety disorder: the GAD-7</i>. Archives of Internal Medicine, v. 166, n. 10, p. 1092–1097, 2006.</p>
+        <p>SDQ info. Disponível em: <a href="https://www.sdqinfo.org/" target="_blank" class="text-blue-600 hover:underline">https://www.sdqinfo.org/</a></p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- Tela SDQ -->
+   <div id="sdq-screen" class="hidden">
+    <div class="bg-white rounded-2xl card-shadow p-8">
+     <div class="flex items-center mb-6"><button onclick="goHome()" class="mr-4 p-2 text-gray-600 hover:text-gray-800 no-print">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+       </svg></button>
+      <h2 class="text-3xl font-bold text-gray-800">SDQ - Strengths and Difficulties Questionnaire</h2>
+     </div>
+     <div class="bg-pink-50 border-l-4 border-pink-400 p-6 mb-8 rounded-r-lg">
+      <div class="flex items-start">
+       <div class="flex-shrink-0">
+        <svg class="w-5 h-5 text-pink-400 mt-0.5" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+        </svg>
+       </div>
+       <div class="ml-3">
+        <div class="mb-3"><span id="sdq-mode-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800"> Modo: Você </span>
         </div>
-    </footer>
-
-    <script>
+        <h3 class="text-sm font-medium text-pink-800">Instruções importantes</h3>
+        <div class="mt-2 text-sm text-pink-700">
+         <p id="sdq-instructions-text">Pense nos <strong>últimos 6 meses</strong> e marque o que <strong>melhor descreve você</strong>:</p>
+         <ul class="list-disc list-inside mt-2 space-y-1">
+          <li><strong>Falso:</strong> não é verdade</li>
+          <li><strong>Mais ou menos verdadeiro:</strong> às vezes é verdade</li>
+          <li><strong>Verdadeiro:</strong> definitivamente é verdade</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div id="sdq-questions" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8"><!-- Questions will be populated by JavaScript -->
+     </div><button id="sdq-calculate" onclick="calculateSDQ()" class="hidden btn-primary text-white px-8 py-3 rounded-lg font-semibold no-print"> Ver Resultados Completos </button>
+     <div id="sdq-results" class="hidden mt-8"></div>
+    </div>
+   </div><!-- Tela GAD-7 -->
+   <div id="gad7-screen" class="hidden">
+    <div class="bg-white rounded-2xl card-shadow p-8">
+     <div class="flex items-center mb-6"><button onclick="goHome()" class="mr-4 p-2 text-gray-600 hover:text-gray-800 no-print">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+       </svg></button>
+      <h2 class="text-3xl font-bold text-gray-800">GAD-7 - Generalized Anxiety Disorder</h2>
+     </div>
+     <div class="bg-amber-50 border-l-4 border-amber-400 p-6 mb-8 rounded-r-lg">
+      <div class="flex items-start">
+       <div class="flex-shrink-0">
+        <svg class="w-5 h-5 text-amber-400 mt-0.5" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+        </svg>
+       </div>
+       <div class="ml-3">
+        <div class="mb-3"><span id="gad7-mode-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800"> Modo: Você </span>
+        </div>
+        <h3 class="text-sm font-medium text-amber-800">Instruções importantes</h3>
+        <div class="mt-2 text-sm text-amber-700">
+         <p id="gad7-instructions-text">Pense sobre <strong>as últimas 2 semanas</strong>. Com que frequência <strong>você</strong> foi incomodado(a) pelos seguintes problemas:</p>
+         <ul class="list-disc list-inside mt-2 space-y-1">
+          <li><strong>Nunca:</strong> 0 dias</li>
+          <li><strong>Vários dias:</strong> 1-6 dias</li>
+          <li><strong>Mais da metade dos dias:</strong> 7-11 dias</li>
+          <li><strong>Quase todos os dias:</strong> 12-14 dias</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div id="gad7-questions" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8"><!-- Questions will be populated by JavaScript -->
+     </div><button id="gad7-calculate" onclick="calculateGAD7()" class="hidden btn-primary text-white px-8 py-3 rounded-lg font-semibold no-print"> Ver Resultados Completos </button>
+     <div id="gad7-results" class="hidden mt-8"></div>
+    </div>
+   </div>
+  </div><!-- Footer -->
+  <footer class="bg-gray-900 text-white py-6 mt-12">
+   <div class="container mx-auto px-4 text-center">
+    <div class="text-sm">
+     Prof° Dr° William Melo, 2025 — Todos os direitos reservados.<br>
+      Instagram: <a href="https://instagram.com/profwilliammelo" target="_blank" class="text-pink-400 hover:underline">@profwilliammelo</a>
+    </div>
+    <p class="text-sm mt-2 text-pink-300">#CienciaDoAfeto #EducacaoComEvidencias</p>
+   </div>
+  </footer>
+  <script>
         // Complete SDQ Questions with official 25 items and variable tags
         const sdqQuestions = [
-            { id: 1, text: "É atencioso(a) com os sentimentos dos outros", tag: "consid", inverted: false, subscale: "prosocial" },
-            { id: 2, text: "Fica agitado(a), não consegue ficar parado(a)", tag: "restles", inverted: false, subscale: "hyperactivity" },
-            { id: 3, text: "Tem dores de cabeça, dores de barriga ou náuseas", tag: "somatic", inverted: false, subscale: "emotional" },
-            { id: 4, text: "Compartilha prontamente com os outros", tag: "shares", inverted: false, subscale: "prosocial" },
-            { id: 5, text: "Tem explosões de temperamento", tag: "tantrum", inverted: false, subscale: "conduct" },
-            { id: 6, text: "Prefere brincar sozinho(a)", tag: "loner", inverted: false, subscale: "peer" },
-            { id: 7, text: "Obedece às regras", tag: "obeys", inverted: true, subscale: "conduct" },
-            { id: 8, text: "Fica preocupado(a) sem motivo", tag: "worries", inverted: false, subscale: "emotional" },
-            { id: 9, text: "Ajuda quem está machucado ou triste", tag: "caring", inverted: false, subscale: "prosocial" },
-            { id: 10, text: "Fica inquieto(a) ou se remexe bastante", tag: "fidgety", inverted: false, subscale: "hyperactivity" },
-            { id: 11, text: "Tem um bom amigo próximo", tag: "friend", inverted: true, subscale: "peer" },
-            { id: 12, text: "Briga ou intimida outros", tag: "fights", inverted: false, subscale: "conduct" },
-            { id: 13, text: "Fica triste ou para baixo", tag: "unhappy", inverted: false, subscale: "emotional" },
-            { id: 14, text: "Geralmente é bem visto(a) pelos outros", tag: "popular", inverted: true, subscale: "peer" },
-            { id: 15, text: "Se distrai facilmente", tag: "distrac", inverted: false, subscale: "hyperactivity" },
-            { id: 16, text: "Fica nervoso(a) em situações novas", tag: "clingy", inverted: false, subscale: "emotional" },
-            { id: 17, text: "É gentil com crianças mais novas", tag: "kind", inverted: false, subscale: "prosocial" },
-            { id: 18, text: "Mente ou trapaceia", tag: "lies", inverted: false, subscale: "conduct" },
-            { id: 19, text: "É provocado(a) ou intimidado(a)", tag: "bullied", inverted: false, subscale: "peer" },
-            { id: 20, text: "Voluntaria-se para ajudar", tag: "helpout", inverted: false, subscale: "prosocial" },
-            { id: 21, text: "Pensa antes de agir", tag: "reflect", inverted: true, subscale: "hyperactivity" },
-            { id: 22, text: "Rouba coisas que não são suas", tag: "steals", inverted: false, subscale: "conduct" },
-            { id: 23, text: "Se dá melhor com adultos do que com crianças", tag: "oldbest", inverted: false, subscale: "peer" },
-            { id: 24, text: "Tem muitos medos", tag: "afraid", inverted: false, subscale: "emotional" },
-            { id: 25, text: "Concentra-se com facilidade", tag: "attends", inverted: true, subscale: "hyperactivity" }
+            { id: 1, text: "É atencioso(a) com os sentimentos dos outros", textSelf: "Eu sou atencioso(a) com os sentimentos dos outros", textOther: "A pessoa é atenciosa com os sentimentos dos outros", tag: "consid", inverted: false, subscale: "prosocial" },
+            { id: 2, text: "Fica agitado(a), não consegue ficar parado(a)", textSelf: "Eu fico agitado(a), não consigo ficar parado(a)", textOther: "A pessoa fica agitada, não consegue ficar parada", tag: "restles", inverted: false, subscale: "hyperactivity" },
+            { id: 3, text: "Tem dores de cabeça, dores de barriga ou náuseas", textSelf: "Eu tenho dores de cabeça, dores de barriga ou náuseas", textOther: "A pessoa tem dores de cabeça, dores de barriga ou náuseas", tag: "somatic", inverted: false, subscale: "emotional" },
+            { id: 4, text: "Compartilha prontamente com os outros", textSelf: "Eu compartilho prontamente com os outros", textOther: "A pessoa compartilha prontamente com os outros", tag: "shares", inverted: false, subscale: "prosocial" },
+            { id: 5, text: "Tem explosões de temperamento", textSelf: "Eu tenho explosões de temperamento", textOther: "A pessoa tem explosões de temperamento", tag: "tantrum", inverted: false, subscale: "conduct" },
+            { id: 6, text: "Prefere fazer as coisas sozinho(a)", textSelf: "Eu prefiro fazer as coisas sozinho(a)", textOther: "A pessoa prefere fazer as coisas sozinha", tag: "loner", inverted: false, subscale: "peer" },
+            { id: 7, text: "Obedece às regras", textSelf: "Eu obedeço às regras", textOther: "A pessoa obedece às regras", tag: "obeys", inverted: true, subscale: "conduct" },
+            { id: 8, text: "Fica preocupado(a) sem motivo", textSelf: "Eu fico preocupado(a) sem motivo", textOther: "A pessoa fica preocupada sem motivo", tag: "worries", inverted: false, subscale: "emotional" },
+            { id: 9, text: "Ajuda quem está machucado ou triste", textSelf: "Eu ajudo quem está machucado ou triste", textOther: "A pessoa ajuda quem está machucado ou triste", tag: "caring", inverted: false, subscale: "prosocial" },
+            { id: 10, text: "Fica inquieto(a) ou se remexe bastante", textSelf: "Eu fico inquieto(a) ou me remexo bastante", textOther: "A pessoa fica inquieta ou se remexe bastante", tag: "fidgety", inverted: false, subscale: "hyperactivity" },
+            { id: 11, text: "Tem um bom amigo próximo", textSelf: "Eu tenho pelo menos um(a) bom(boa) amigo(a)", textOther: "A pessoa tem pelo menos um(a) bom(boa) amigo(a)", tag: "friend", inverted: true, subscale: "peer" },
+            { id: 12, text: "Briga ou intimida outros", textSelf: "Eu brigo ou intimido outros", textOther: "A pessoa briga ou intimida outros", tag: "fights", inverted: false, subscale: "conduct" },
+            { id: 13, text: "Fica triste ou para baixo", textSelf: "Eu fico triste ou para baixo", textOther: "A pessoa fica triste ou para baixo", tag: "unhappy", inverted: false, subscale: "emotional" },
+            { id: 14, text: "Geralmente é bem visto(a) pelos outros", textSelf: "Eu geralmente sou bem visto(a) pelos outros", textOther: "A pessoa geralmente é bem vista pelos outros", tag: "popular", inverted: true, subscale: "peer" },
+            { id: 15, text: "Se distrai facilmente", textSelf: "Eu me distraio facilmente", textOther: "A pessoa se distrai facilmente", tag: "distrac", inverted: false, subscale: "hyperactivity" },
+            { id: 16, text: "Fica nervoso(a) em situações novas", textSelf: "Eu fico nervoso(a) em situações novas", textOther: "A pessoa fica nervosa em situações novas", tag: "clingy", inverted: false, subscale: "emotional" },
+            { id: 17, text: "É gentil com crianças mais novas", textSelf: "Eu sou gentil com crianças mais novas", textOther: "A pessoa é gentil com crianças mais novas", tag: "kind", inverted: false, subscale: "prosocial" },
+            { id: 18, text: "Mente ou trapaceia", textSelf: "Eu minto ou trapaceio", textOther: "A pessoa mente ou trapaceia", tag: "lies", inverted: false, subscale: "conduct" },
+            { id: 19, text: "É provocado(a) ou intimidado(a)", textSelf: "Eu sou provocado(a) ou intimidado(a)", textOther: "A pessoa é provocada ou intimidada", tag: "bullied", inverted: false, subscale: "peer" },
+            { id: 20, text: "Voluntaria-se para ajudar", textSelf: "Eu me voluntario para ajudar", textOther: "A pessoa se voluntaria para ajudar", tag: "helpout", inverted: false, subscale: "prosocial" },
+            { id: 21, text: "Pensa antes de agir", textSelf: "Eu penso antes de agir", textOther: "A pessoa pensa antes de agir", tag: "reflect", inverted: true, subscale: "hyperactivity" },
+            { id: 22, text: "Rouba coisas que não são suas", textSelf: "Eu roubo coisas que não são minhas", textOther: "A pessoa rouba coisas que não são suas", tag: "steals", inverted: false, subscale: "conduct" },
+            { id: 23, text: "Se dá melhor com adultos do que com crianças", textSelf: "Eu me dou melhor com adultos do que com crianças", textOther: "A pessoa se dá melhor com adultos do que com crianças", tag: "oldbest", inverted: false, subscale: "peer" },
+            { id: 24, text: "Tem muitos medos", textSelf: "Eu tenho muitos medos", textOther: "A pessoa tem muitos medos", tag: "afraid", inverted: false, subscale: "emotional" },
+            { id: 25, text: "Concentra-se com facilidade", textSelf: "Eu consigo me concentrar com facilidade", textOther: "A pessoa consegue se concentrar com facilidade", tag: "attends", inverted: true, subscale: "hyperactivity" }
         ];
 
         // GAD-7 Questions
@@ -305,6 +258,23 @@
         let sdqAnswers = {};
         let gad7Answers = {};
 
+        // Helper functions for mode handling
+        function isSelf() {
+            return document.getElementById('global-respondent').value === 'self';
+        }
+
+        function subjectLabel() {
+            return isSelf() ? 'você' : 'a pessoa';
+        }
+
+        function subjectPronoun() {
+            return isSelf() ? 'Você' : 'A pessoa';
+        }
+
+        function possessivePronoun() {
+            return isSelf() ? 'seus' : 'da pessoa';
+        }
+
         function showInfo() {
             document.getElementById('info-modal').classList.remove('hidden');
         }
@@ -318,13 +288,54 @@
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('sdq-screen').classList.remove('hidden');
             renderSDQQuestions();
+            updateSDQInstructions();
         }
+
+        // Add event listener for mode changes
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('global-respondent').addEventListener('change', function() {
+                if (currentTest === 'sdq') {
+                    renderSDQQuestions();
+                    updateSDQInstructions();
+                } else if (currentTest === 'gad7') {
+                    renderGAD7Questions();
+                    updateGAD7Instructions();
+                }
+            });
+        });
 
         function startGAD7() {
             currentTest = 'gad7';
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('gad7-screen').classList.remove('hidden');
             renderGAD7Questions();
+            updateGAD7Instructions();
+        }
+
+        function updateSDQInstructions() {
+            const badge = document.getElementById('sdq-mode-badge');
+            const instructions = document.getElementById('sdq-instructions-text');
+            
+            if (isSelf()) {
+                badge.textContent = 'Modo: Você';
+                instructions.innerHTML = 'Pense nos <strong>últimos 6 meses</strong> e marque o que <strong>melhor descreve você</strong>:';
+            } else {
+                badge.textContent = 'Modo: Outra pessoa';
+                instructions.innerHTML = 'Pense nos <strong>últimos 6 meses</strong> e marque o que <strong>melhor descreve a pessoa</strong>:';
+            }
+        }
+
+        function updateGAD7Instructions() {
+            const badge = document.getElementById('gad7-mode-badge');
+            const instructions = document.getElementById('gad7-instructions-text');
+            
+            if (isSelf()) {
+                badge.textContent = 'Modo: Você';
+                instructions.innerHTML = 'Pense sobre <strong>as últimas 2 semanas</strong>. Com que frequência <strong>você</strong> foi incomodado(a) pelos seguintes problemas:';
+            } else {
+                badge.textContent = 'Modo: Outra pessoa';
+                instructions.innerHTML = 'Pense sobre <strong>as últimas 2 semanas</strong>. Com que frequência <strong>a pessoa</strong> foi incomodada pelos seguintes problemas:';
+            }
         }
 
         function goHome() {
@@ -338,33 +349,47 @@
         function renderSDQQuestions() {
             const container = document.getElementById('sdq-questions');
             container.innerHTML = '';
+            const mode = document.getElementById('global-respondent').value;
 
             sdqQuestions.forEach((question, index) => {
+                const qText = (mode === 'self' ? (question.textSelf || question.text) : (question.textOther || question.text));
+                const ariaLabel = mode === 'self' ? `você ${question.text.toLowerCase()}` : `a pessoa ${question.text.toLowerCase()}`;
+                
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question-card p-4 border border-gray-200 rounded-lg';
                 questionDiv.innerHTML = `
                     <div class="mb-3">
                         <h4 class="font-medium text-gray-800 mb-3 text-sm">
-                            ${index + 1}. ${question.text} 
+                            ${index + 1}. ${qText} 
                             <span class="tag-label">(${question.tag})</span>
+                            <span style="font-size: 10px; color: #999; margin-left: 8px;">tags: s${question.tag} • p${question.tag} • t${question.tag}</span>
                         </h4>
                         <div class="space-y-2">
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="sdq-${question.id}" value="0" onchange="updateSDQAnswer(${question.id}, 0, this)" class="mr-2">
+                                <input type="radio" name="sdq-${question.id}" value="0" onchange="updateSDQAnswer(${question.id}, 0, this)" class="mr-2" aria-label="${ariaLabel} - falso">
                                 <span>Falso</span>
                             </label>
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="sdq-${question.id}" value="1" onchange="updateSDQAnswer(${question.id}, 1, this)" class="mr-2">
+                                <input type="radio" name="sdq-${question.id}" value="1" onchange="updateSDQAnswer(${question.id}, 1, this)" class="mr-2" aria-label="${ariaLabel} - mais ou menos verdadeiro">
                                 <span>Mais ou menos verdadeiro</span>
                             </label>
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="sdq-${question.id}" value="2" onchange="updateSDQAnswer(${question.id}, 2, this)" class="mr-2">
+                                <input type="radio" name="sdq-${question.id}" value="2" onchange="updateSDQAnswer(${question.id}, 2, this)" class="mr-2" aria-label="${ariaLabel} - verdadeiro">
                                 <span>Verdadeiro</span>
                             </label>
                         </div>
                     </div>
                 `;
                 container.appendChild(questionDiv);
+                
+                // Restore previous answer if exists
+                if (sdqAnswers[question.id] !== undefined) {
+                    const radio = questionDiv.querySelector(`input[value="${sdqAnswers[question.id]}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        questionDiv.classList.add('answered');
+                    }
+                }
             });
         }
 
@@ -373,6 +398,8 @@
             container.innerHTML = '';
 
             gad7Questions.forEach((question, index) => {
+                const ariaLabel = `${subjectLabel()} ${question.toLowerCase()}`;
+                
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question-card p-4 border border-gray-200 rounded-lg';
                 questionDiv.innerHTML = `
@@ -380,25 +407,34 @@
                         <h4 class="font-medium text-gray-800 mb-3 text-sm">${index + 1}. ${question}</h4>
                         <div class="space-y-2">
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="gad7-${index + 1}" value="0" onchange="updateGAD7Answer(${index + 1}, 0, this)" class="mr-2">
+                                <input type="radio" name="gad7-${index + 1}" value="0" onchange="updateGAD7Answer(${index + 1}, 0, this)" class="mr-2" aria-label="${ariaLabel} - nunca">
                                 <span>Nunca</span>
                             </label>
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="gad7-${index + 1}" value="1" onchange="updateGAD7Answer(${index + 1}, 1, this)" class="mr-2">
+                                <input type="radio" name="gad7-${index + 1}" value="1" onchange="updateGAD7Answer(${index + 1}, 1, this)" class="mr-2" aria-label="${ariaLabel} - vários dias">
                                 <span>Vários dias</span>
                             </label>
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="gad7-${index + 1}" value="2" onchange="updateGAD7Answer(${index + 1}, 2, this)" class="mr-2">
+                                <input type="radio" name="gad7-${index + 1}" value="2" onchange="updateGAD7Answer(${index + 1}, 2, this)" class="mr-2" aria-label="${ariaLabel} - mais da metade dos dias">
                                 <span>Mais da metade dos dias</span>
                             </label>
                             <label class="flex items-center text-sm">
-                                <input type="radio" name="gad7-${index + 1}" value="3" onchange="updateGAD7Answer(${index + 1}, 3, this)" class="mr-2">
+                                <input type="radio" name="gad7-${index + 1}" value="3" onchange="updateGAD7Answer(${index + 1}, 3, this)" class="mr-2" aria-label="${ariaLabel} - quase todos os dias">
                                 <span>Quase todos os dias</span>
                             </label>
                         </div>
                     </div>
                 `;
                 container.appendChild(questionDiv);
+                
+                // Restore previous answer if exists
+                if (gad7Answers[index + 1] !== undefined) {
+                    const radio = questionDiv.querySelector(`input[value="${gad7Answers[index + 1]}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        questionDiv.classList.add('answered');
+                    }
+                }
             });
         }
 
@@ -573,7 +609,7 @@
             const html = `
                 <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-6">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
-                        📊 Resultados SDQ Completos
+                        📊 ${isSelf() ? 'Seus' : 'Resultados da pessoa'} - SDQ Completos
                     </h3>
                     
                     <div class="space-y-6 mb-8">
@@ -659,7 +695,7 @@
             const html = `
                 <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-6">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
-                        📊 Resultados GAD-7 Completos
+                        📊 ${isSelf() ? 'Seus' : 'Resultados da pessoa'} - GAD-7 Completos
                     </h3>
                     
                     <div class="space-y-6 mb-8">
@@ -798,5 +834,5 @@
             `;
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995ccafa96dbe2d3',t:'MTc2MTY3OTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995d777316f5cb59',t:'MTc2MTY4NjMxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
